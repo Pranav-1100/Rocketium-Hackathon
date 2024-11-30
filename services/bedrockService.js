@@ -1,4 +1,3 @@
-// services/bedrockService.js
 import { InvokeModelCommand } from "@aws-sdk/client-bedrock-runtime";
 import { bedrockRuntime, BEDROCK_MODELS } from '../config/aws.js';
 
@@ -42,7 +41,6 @@ export class BedrockService {
             const response = await bedrockRuntime.send(command);
             const responseData = JSON.parse(new TextDecoder().decode(response.body));
             
-            // Extract JSON from Claude's response
             const content = responseData.content[0].text;
             return JSON.parse(content);
         } catch (error) {
@@ -51,12 +49,8 @@ export class BedrockService {
         }
     }
 
-    // For the first route (/qc)
     async runQCProcess(imageBase64, prdText) {
-        // Step 1: Initial Analysis
         const initialAnalysis = await this.generateInitialAnalysis(imageBase64, prdText);
-
-        // Step 2: QC Check
         const qcReport = await this.performQCCheck(initialAnalysis, imageBase64, prdText);
 
         return {
@@ -66,7 +60,6 @@ export class BedrockService {
         };
     }
 
-    // For the second route (/analysis)
     async runCRMAnalysis(qcReport, initialAnalysis, imageBase64 = null) {
         if (qcReport.overall_status !== 'PASS') {
             return {
@@ -88,7 +81,6 @@ export class BedrockService {
         };
     }
 
-    // Original methods remain the same
     async generateInitialAnalysis(imageBase64, prdText) {
         const prompt = `Analyze this advertisement image and provided PRD requirements.
         

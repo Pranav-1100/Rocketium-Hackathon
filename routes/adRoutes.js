@@ -12,7 +12,6 @@ const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 const bedrockService = new BedrockService();
 
-// Route 1: QC Check
 router.post('/qc',
     upload.fields([
         { name: 'image', maxCount: 1 },
@@ -20,7 +19,6 @@ router.post('/qc',
     ]),
     async (req, res, next) => {
         try {
-            // Validate files
             const imageFile = req.files['image']?.[0];
             const prdFile = req.files['prd']?.[0];
             
@@ -31,12 +29,8 @@ router.post('/qc',
                     errors: validationErrors
                 });
             }
-
-            // Process files
             const imageBase64 = convertImageToBase64(imageFile.buffer);
             const prdText = await extractTextFromPDF(prdFile.buffer);
-
-            // Step 1: Initial Analysis
             let initialAnalysis;
             try {
                 initialAnalysis = await bedrockService.generateInitialAnalysis(
@@ -51,7 +45,6 @@ router.post('/qc',
                 });
             }
 
-            // Step 2: QC Check
             let qcReport;
             try {
                 qcReport = await bedrockService.performQCCheck(
@@ -83,7 +76,6 @@ router.post('/qc',
     }
 );
 
-// Route 2: CRM Analysis (requires analysis ID or full QC data)
 router.post('/analysis',
     upload.fields([
         { name: 'image', maxCount: 1 },
@@ -99,8 +91,6 @@ router.post('/analysis',
                     error: 'QC report and initial analysis are required'
                 });
             }
-
-            // Validate if QC passed
             if (qcReport.overall_status !== 'PASS') {
                 return res.json({
                     status: 'FAIL',
@@ -108,14 +98,11 @@ router.post('/analysis',
                     qc_report: qcReport
                 });
             }
-
-            // Process image if provided (for re-analysis)
             let imageBase64 = null;
             if (req.files['image']) {
                 imageBase64 = convertImageToBase64(req.files['image'][0].buffer);
             }
 
-            // Generate CRM Analysis
             const crmAnalysis = await bedrockService.generateCRMAnalysis(
                 qcReport,
                 initialAnalysis,
@@ -135,5 +122,4 @@ router.post('/analysis',
         }
     }
 );
-
 export default router;
