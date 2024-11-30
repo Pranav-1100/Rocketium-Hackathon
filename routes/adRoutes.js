@@ -12,12 +12,12 @@ const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 const bedrockService = new BedrockService();
 
-// Single route for complete analysis
-router.post('/analyze', 
+// Route 1: QC Check
+router.post('/qc',
     upload.fields([
         { name: 'image', maxCount: 1 },
         { name: 'prd', maxCount: 1 }
-    ]), 
+    ]),
     async (req, res, next) => {
         try {
             // Validate files
@@ -68,29 +68,67 @@ router.post('/analyze',
                 });
             }
 
-            // Step 3: CRM Analysis (only if QC passed)
-            let crmAnalysis = null;
-            if (qcReport.overall_status === 'PASS') {
-                try {
-                    crmAnalysis = await bedrockService.generateCRMAnalysis(
-                        qcReport,
-                        initialAnalysis,
-                        imageBase64
-                    );
-                } catch (error) {
-                    console.error('CRM Analysis Error:', error);
-                    // Continue without CRM analysis
+            res.json({
+                status: qcReport.overall_status,
+                timestamp: new Date().toISOString(),
+                analysis: {
+                    initial: initialAnalysis,
+                    qc: qcReport
                 }
+            });
+
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+// Route 2: CRM Analysis (requires analysis ID or full QC data)
+router.post('/analysis',
+    upload.fields([
+        { name: 'image', maxCount: 1 },
+        { name: 'prd', maxCount: 1 }
+    ]),
+    async (req, res, next) => {
+        try {
+            const { qcReport, initialAnalysis } = req.body;
+            
+            if (!qcReport || !initialAnalysis) {
+                return res.status(400).json({
+                    status: 'FAIL',
+                    error: 'QC report and initial analysis are required'
+                });
             }
 
-            // Process and return results
-            const results = processAnalysisResults(
-                initialAnalysis,
+            // Validate if QC passed
+            if (qcReport.overall_status !== 'PASS') {
+                return res.json({
+                    status: 'FAIL',
+                    reason: 'QC check did not pass',
+                    qc_report: qcReport
+                });
+            }
+
+            // Process image if provided (for re-analysis)
+            let imageBase64 = null;
+            if (req.files['image']) {
+                imageBase64 = convertImageToBase64(req.files['image'][0].buffer);
+            }
+
+            // Generate CRM Analysis
+            const crmAnalysis = await bedrockService.generateCRMAnalysis(
                 qcReport,
-                crmAnalysis
+                initialAnalysis,
+                imageBase64
             );
 
-            res.json(results);
+            res.json({
+                status: 'SUCCESS',
+                timestamp: new Date().toISOString(),
+                analysis: {
+                    crm: crmAnalysis
+                }
+            });
 
         } catch (error) {
             next(error);

@@ -51,6 +51,44 @@ export class BedrockService {
         }
     }
 
+    // For the first route (/qc)
+    async runQCProcess(imageBase64, prdText) {
+        // Step 1: Initial Analysis
+        const initialAnalysis = await this.generateInitialAnalysis(imageBase64, prdText);
+
+        // Step 2: QC Check
+        const qcReport = await this.performQCCheck(initialAnalysis, imageBase64, prdText);
+
+        return {
+            initial_analysis: initialAnalysis,
+            qc_report: qcReport,
+            timestamp: new Date().toISOString()
+        };
+    }
+
+    // For the second route (/analysis)
+    async runCRMAnalysis(qcReport, initialAnalysis, imageBase64 = null) {
+        if (qcReport.overall_status !== 'PASS') {
+            return {
+                status: 'SKIPPED',
+                reason: 'QC check failed',
+                qc_report: qcReport
+            };
+        }
+
+        const crmAnalysis = await this.generateCRMAnalysis(
+            qcReport,
+            initialAnalysis,
+            imageBase64
+        );
+
+        return {
+            crm_analysis: crmAnalysis,
+            timestamp: new Date().toISOString()
+        };
+    }
+
+    // Original methods remain the same
     async generateInitialAnalysis(imageBase64, prdText) {
         const prompt = `Analyze this advertisement image and provided PRD requirements.
         
@@ -124,14 +162,6 @@ export class BedrockService {
     }
 
     async generateCRMAnalysis(qcReport, analysisJson, imageBase64) {
-        if (qcReport.overall_status === 'FAIL') {
-            return {
-                status: 'SKIPPED',
-                reason: 'QC check failed',
-                qc_report: qcReport
-            };
-        }
-
         const prompt = `Generate CRM and performance insights for this advertisement.
         
         Analysis: ${JSON.stringify(analysisJson, null, 2)}
@@ -139,11 +169,6 @@ export class BedrockService {
 
         Respond with ONLY a JSON object using this exact structure:
         {
-            "performance_metrics": {
-                "estimated_ctr": string,
-                "engagement_score": number,
-                "conversion_potential": "LOW" | "MEDIUM" | "HIGH"
-            },
             "audience_insights": {
                 "target_demographics": [string],
                 "interests": [string],
