@@ -125,30 +125,76 @@ export class BedrockService {
     }
 
     async performQCCheck(analysisJson, imageBase64, prdText) {
-        const prompt = `Perform a quality control check on this advertisement.
         
-        Current Analysis: ${JSON.stringify(analysisJson, null, 2)}
-        PRD Requirements: ${prdText}
+const prompt = `Perform a comprehensive quality control check on this advertisement.
 
-        Respond with ONLY a JSON object using this exact structure:
-        {
-            "overall_status": "PASS" | "FAIL",
-            "technical_compliance": {
-                "status": "PASS" | "FAIL",
-                "issues": [string],
-                "recommendations": [string]
-            },
-            "brand_compliance": {
-                "status": "PASS" | "FAIL",
-                "issues": [string],
-                "recommendations": [string]
-            },
-            "content_compliance": {
-                "status": "PASS" | "FAIL",
-                "issues": [string],
-                "recommendations": [string]
-            }
-        }`;
+Current Analysis: ${JSON.stringify(analysisJson, null, 2)}
+PRD Requirements: ${prdText}
+
+Respond with ONLY a JSON object using this exact structure:
+{
+    "overall_status": "PASS" | "FAIL",
+    "technical_compliance": {
+        "status": "PASS" | "FAIL",
+        "checks": {
+            "image_resolution": { "status": "PASS" | "FAIL", "details": string },
+            "file_format": { "status": "PASS" | "FAIL", "details": string },
+            "color_space": { "status": "PASS" | "FAIL", "details": string },
+            "file_size": { "status": "PASS" | "FAIL", "details": string },
+            "asset_specifications": { "status": "PASS" | "FAIL", "details": string }
+        },
+        "issues": [string],
+        "recommendations": [string]
+    },
+    "brand_compliance": {
+        "status": "PASS" | "FAIL",
+        "checks": {
+            "logo_guidelines": { "status": "PASS" | "FAIL", "details": string },
+            "color_palette": { "status": "PASS" | "FAIL", "details": string },
+            "typography": { "status": "PASS" | "FAIL", "details": string },
+            "brand_voice": { "status": "PASS" | "FAIL", "details": string },
+            "visual_style": { "status": "PASS" | "FAIL", "details": string }
+        },
+        "issues": [string],
+        "recommendations": [string]
+    },
+    "platform_compliance": {
+        "status": "PASS" | "FAIL",
+        "checks": {
+            "platform_requirements": { "status": "PASS" | "FAIL", "details": string },
+            "ad_size_specs": { "status": "PASS" | "FAIL", "details": string },
+            "text_limitations": { "status": "PASS" | "FAIL", "details": string },
+            "cta_placement": { "status": "PASS" | "FAIL", "details": string },
+            "interactive_elements": { "status": "PASS" | "FAIL", "details": string }
+        },
+        "issues": [string],
+        "recommendations": [string]
+    },
+    "legal_compliance": {
+        "status": "PASS" | "FAIL",
+        "checks": {
+            "disclaimers": { "status": "PASS" | "FAIL", "details": string },
+            "copyright": { "status": "PASS" | "FAIL", "details": string },
+            "industry_regulations": { "status": "PASS" | "FAIL", "details": string },
+            "platform_policies": { "status": "PASS" | "FAIL", "details": string },
+            "privacy_compliance": { "status": "PASS" | "FAIL", "details": string }
+        },
+        "issues": [string],
+        "recommendations": [string]
+    },
+    "performance_compliance": {
+        "status": "PASS" | "FAIL",
+        "checks": {
+            "loading_speed": { "status": "PASS" | "FAIL", "details": string },
+            "interaction_points": { "status": "PASS" | "FAIL", "details": string },
+            "animation_timing": { "status": "PASS" | "FAIL", "details": string },
+            "response_time": { "status": "PASS" | "FAIL", "details": string },
+            "cross_platform_check": { "status": "PASS" | "FAIL", "details": string }
+        },
+        "issues": [string],
+        "recommendations": [string]
+    }
+}`;
 
         return await this.invokeModel(prompt, imageBase64);
     }
