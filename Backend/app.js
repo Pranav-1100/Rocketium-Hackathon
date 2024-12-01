@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import adRoutes from './routes/adRoutes.js';
+import competitorRoutes from './routes/competitorRoutes.js';
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 app.use('/api/ads', adRoutes);
+app.use('/api/competitor', competitorRoutes);
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
