@@ -3,15 +3,28 @@ import LoadAnim from "@/components/loadanim/LoadAnim";
 import "./style.css";
 import { motion, useAnimation } from "motion/react";
 import GridBack from "@/components/GridBack/GridBack";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Page() {
+  const res = JSON.stringify(
+    JSON.stringify(localStorage.getItem("res")),
+    null,
+    "\t"
+  );
+  useEffect(() => {
+    console.log(res);
+  }, []);
   const anim = useAnimation();
   return (
     <>
       <GridBack className="result">
         <section className="user-result">
           <h1>Analysis</h1>
-          <motion.button
+          <code>
+            {res}
+          </code>
+          {/* <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.92 }}
             onClick={(e) => {
@@ -19,7 +32,7 @@ export default function Page() {
             }}
           >
             Submit
-          </motion.button>
+          </motion.button> */}
           <motion.section
             className="loading"
             variants={{

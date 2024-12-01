@@ -16,6 +16,9 @@ main.result section.user-result h1 {
     color: var(--color-secondary);
     font-size: var(--font-large);
 }
+code{
+    width: 100%;
+}
 
 main.result section.user-result input[type="text"] {
     padding: var(--uxxsmall);
