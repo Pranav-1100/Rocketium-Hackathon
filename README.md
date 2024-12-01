@@ -1,6 +1,7 @@
 # Creative Ops Automation Tool
 
-An intelligent automation platform for streamlining the creative operations pipeline, focusing on ad creation workflow optimization using AWS Bedrock's AI capabilities.
+We aim to automate the QC pipeline by analyzing ads using Amazon Bedrock's Claude Vision model. This process involves comparing the given ad with competitors’ ads to identify strengths and weaknesses. Based on the analysis, the system will suggest improvements to enhance the ad's effectiveness. This automation streamlines the QC stage, ensures consistency, and provides actionable insights, reducing manual effort while improving the overall quality of advertisements.
+
 
 ## 🎯 Key Features
 
