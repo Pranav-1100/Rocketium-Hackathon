@@ -1,0 +1,50 @@
+main.auth {
+    position: relative;
+    height: 100svh;
+    display: grid;
+    place-items: center;
+}
+
+section {
+    width: 100%;
+    padding: var(--uxsmall);
+    max-width: 426px;
+    min-height: 0;
+    display: flex;
+    gap: var(--uxsmall);
+    flex-direction: column;
+    align-items: center;
+    background-color: #4444;
+    border-radius: var(--uxsmall);
+}
+
+section h2 {
+    font-size: var(--font-larger);
+    font-weight: 800;
+    text-align: center;
+    color: var(--color-secondary);
+}
+
+section input {
+    width: 100%;
+    padding: var(--uxxsmall);
+}
+
+section button {
+    align-self: flex-end;
+    min-width: var(--uxxlarge);
+    padding: var(--uxxsmall);
+}
+
+section .input {
+    width: 100%;
+    background-color: blue;
+    display: flex;
+    align-items: center;
+}
+
+@media (width < 1441px) {}
+
+@media (width < 769px) {}
+
+@media (width < 426px) {}

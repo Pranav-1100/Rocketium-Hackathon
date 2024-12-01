@@ -1,0 +1,85 @@
+:root {
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --font-xxsmall: 0.694rem;
+  --font-xsmall: 0.833rem;
+  --font-smaller: 1rem;
+  --font-small: 1.2rem;
+  --font-medium: 1.44rem;
+  --font-large: 1.728rem;
+  --font-larger: 2.074rem;
+  --font-xlarge: 2.488rem;
+  --font-xxlarge: 2.986rem;
+
+  --uxxsmall: 0.4rem;
+  --uxsmall: 0.6rem;
+  --usmaller: 0.8rem;
+  --usmall: 1.2rem;
+  --umedium: 1.6rem;
+  --ularge: 2.4rem;
+  --ularger: 3.2rem;
+  --uxlarge: 4.8rem;
+  --uxxlarge: 6.4rem;
+
+  --color-primary: #1a1a1a;
+  --color-secondary: #ff8a05;
+  --color-ternary: #f54545;
+  --color-white: #ddd;
+}
+
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+html,
+body {
+  /* overflow-x: hidden; */
+  height: 100svh;
+  background-color: var(--color-primary);
+  scroll-behavior: smooth;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+@media (pointer : fine) {
+  .scrollbar::-webkit-scrollbar {
+    width: var(--uxxsmall);
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    background-color: #222;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background-color: #8a8a8a8a;
+    border-radius: 0.64rem;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: #8a8a8a;
+    border-radius: 0.64rem;
+  }
+
+  .scrollbar::-webkit-scrollbar-corner {
+    display: none;
+  }
+}

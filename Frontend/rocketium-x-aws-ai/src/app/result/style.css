@@ -1,0 +1,90 @@
+
+main.result section.user-result {
+    position: relative;
+    width: 100%;
+    max-width: 512px;
+    padding: var(--uxsmall);
+    display: flex;
+    gap: var(--uxsmall);
+    flex-direction: column;
+    align-items: center;
+    background-color: #4444;
+    border-radius: var(--uxsmall);
+    backdrop-filter: blur(8px);
+}
+
+main.result section.user-result h1 {
+    color: var(--color-secondary);
+    font-size: var(--font-large);
+}
+
+main.result section.user-result input[type="text"] {
+    padding: var(--uxxsmall);
+    width: 100%;
+    outline: none;
+    border: 2px solid #6666;
+    border-radius: var(--uxsmall);
+    transition: border 128ms ease;
+}
+
+main.result section.user-result input[type="text"]:focus {
+    border: 2px solid var(--color-secondary);
+}
+
+main.result section.user-result>.upload {
+    width: 100%;
+    display: flex;
+    gap: var(--uxsmall);
+}
+
+main.result section.user-result>.upload input[type="file"] {
+    display: none;
+}
+
+main.result section.user-result>.upload label {
+    padding: var(--uxxsmall);
+    min-width: var(--uxxlarge);
+    background-color: #8888;
+    flex-grow: 1;
+    border-radius: var(--uxsmall);
+    text-align: center;
+}
+
+main.result section.user-result button {
+    padding: var(--uxxsmall);
+    min-width: var(--uxxlarge);
+    background-color: var(--color-secondary);
+    border: none;
+    border-radius: var(--uxsmall);
+    font-weight: 700;
+    align-self: flex-end;
+}
+
+main.result section.loading {
+    position: absolute;
+    background-color: var(--color-secondary);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform-origin: 100% 100%;
+    transform: scale(0);
+    border-radius: var(--uxsmall);
+}
+
+main.result section.loading>.screen {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform-origin: 100% 100%;
+    transform: scale(0);
+    background-color: #252525;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: var(--uxsmall);
+}
